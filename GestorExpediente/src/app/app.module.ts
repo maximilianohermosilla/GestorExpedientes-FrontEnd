@@ -16,6 +16,7 @@ import { ToolbarComponent } from './components/shared/toolbar/toolbar.component'
 import { SpinnerComponent } from './components/shared/spinner/spinner.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { DialogComponent } from './components/shared/dialog/dialog.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { DialogComponent } from './components/shared/dialog/dialog.component';
     ToolbarComponent,
     SpinnerComponent,
     FooterComponent,
-    DialogComponent
+    DialogComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
