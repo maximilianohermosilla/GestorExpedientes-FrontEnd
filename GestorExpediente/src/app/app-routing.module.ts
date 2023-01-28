@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ExpedienteAbmComponent } from './components/expediente-abm/expediente-abm.component';
+import { ExpedientesListaComponent } from './components/expedientes-lista/expedientes-lista.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 const routes: Routes = [
   {
@@ -9,19 +11,23 @@ const routes: Routes = [
     pathMatch: 'full' 
   },
   {
+    path: 'menu',
+    component: LandingPageComponent
+  },
+  {
     path: 'expedientes',
-    component: ExpedienteAbmComponent,
+    component: ExpedientesListaComponent,
     //canActivate: [GuardGuard] 
+  },
+  {
+    path: 'expediente',
+    component: ExpedienteAbmComponent,
   },
   /*{
     path: 'dashboard',
     //component: DashboardComponent, data :{ idPais :'1', idEstilo: '2', idMarca: '3', idCiudad: 4}
     component: DashboardComponent
-  },
-  {
-    path: 'menu',
-    component: LandingPageComponent
-  },
+  }, 
   {
     path: 'reportes',
     component: ReportesComponent

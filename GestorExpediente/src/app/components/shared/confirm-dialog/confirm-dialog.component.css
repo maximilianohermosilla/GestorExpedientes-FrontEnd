@@ -1,22 +1,7 @@
 .mat-dialog-actions {
     display: flex;
     justify-content: space-evenly
-  }
-
-  .class-success{
-    margin-right: 5px;
-    color: #65cd23;
-  }
-
-  .class-warning{
-    margin-right: 5px;
-    color: orange;
-  }
-
-  .class-error{
-    margin-right: 5px;
-    color: red;
-  }
+  }  
 
   h1{
     display:flex;
@@ -28,4 +13,8 @@
   .dialog-content{
     display: flex;
     justify-content: center
+  }
+
+  .container{
+    padding: 20px;
   }

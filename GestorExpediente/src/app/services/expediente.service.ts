@@ -23,6 +23,7 @@ export class ExpedienteService {
   }
 
   public nuevo(element: Expediente): Observable<any> {
+    console.log(element);
     return this.http.post<Expediente>(this.apiUrl + "nuevo", element);
   }
 

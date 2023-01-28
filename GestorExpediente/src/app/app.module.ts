@@ -7,6 +7,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DatePipe } from '@angular/common'
 
 import { ActoAbmComponent } from './components/acto-abm/acto-abm.component';
 import { CaratulaAbmComponent } from './components/caratula-abm/caratula-abm.component';
@@ -17,6 +18,10 @@ import { SpinnerComponent } from './components/shared/spinner/spinner.component'
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { DialogComponent } from './components/shared/dialog/dialog.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { ExpedientesListaComponent } from './components/expedientes-lista/expedientes-lista.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 @NgModule({
@@ -30,7 +35,10 @@ import { FilterPipe } from './pipes/filter.pipe';
     SpinnerComponent,
     FooterComponent,
     DialogComponent,
-    FilterPipe
+    FilterPipe,
+    ExpedientesListaComponent,
+    LandingPageComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +47,7 @@ import { FilterPipe } from './pipes/filter.pipe';
     MaterialModule,
     SharedModule
   ],
-  providers: [],
+  providers: [DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'fr' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

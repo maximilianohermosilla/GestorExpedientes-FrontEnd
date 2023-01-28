@@ -6,10 +6,10 @@
     <span class="example-app-name" routerLink="menu" style="cursor: pointer;" >Gestor Expedientes</span>
     <span class="spacer"></span>
     <div class="name"> {{userName}} </div>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" routerLink="expediente">
       <mat-icon>assignment_add</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" routerLink="expedientes">
       <mat-icon>folder_copy</mat-icon>
     </button>
     <button mat-mini-fab class="button-login" [color]="isAdmin? 'warn': 'accent'" [matTooltip]="isAdmin? 'Cerrar sesión': 'Ingresar'" (click)="toggleLogin()">

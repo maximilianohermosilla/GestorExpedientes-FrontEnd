@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateAdapter } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { Acto } from 'src/app/models/acto';
@@ -11,11 +12,34 @@ import { ActoService } from 'src/app/services/acto.service';
 import { CaratulaService } from 'src/app/services/caratula.service';
 import { ExpedienteService } from 'src/app/services/expediente.service';
 import { SituacionRevistaService } from 'src/app/services/situacion-revista.service';
+import { DialogComponent } from '../shared/dialog/dialog.component';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import 'moment/locale/ja';
+import 'moment/locale/fr';
 
 @Component({
   selector: 'app-expediente-abm',
   templateUrl: './expediente-abm.component.html',
-  styleUrls: ['./expediente-abm.component.css']
+  styleUrls: ['./expediente-abm.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class ExpedienteAbmComponent {
   dataSource: any;
@@ -33,8 +57,8 @@ export class ExpedienteAbmComponent {
     fecha: '',
     documento: '',
     idCaratula: 0,
-    idActo: 0,
-    idSituacionRevista: 0,
+    idActo: undefined,
+    idSituacionRevista: undefined,
     fechaExpediente: '',
     firmadoSumario: false,
     firmadoLaborales: false,
@@ -55,8 +79,11 @@ export class ExpedienteAbmComponent {
     return '';
   };
 
-  constructor(private formBuilder: FormBuilder, public dialogoConfirmacion: MatDialog, private dateAdapter: DateAdapter<Date>,
-    private serviceExpediente: ExpedienteService, private serviceActo: ActoService, private serviceCaratula: CaratulaService, private serviceSituacionRevista: SituacionRevistaService){
+  constructor(private formBuilder: FormBuilder, public dialogoConfirmacion: MatDialog, private dateAdapter: DateAdapter<Date>, public datePipe: DatePipe,
+    private serviceExpediente: ExpedienteService, private serviceActo: ActoService, private serviceCaratula: CaratulaService, private serviceSituacionRevista: SituacionRevistaService,
+      @Inject(MAT_DATE_LOCALE) private _locale: string){
+      this._locale = 'fr';
+      this.dateAdapter.setLocale(this._locale);
       this.formGroup = this.formBuilder.group({
         nombre: ['',[Validators.required]],      
         expediente1: ['',[Validators.required]],
@@ -84,27 +111,100 @@ export class ExpedienteAbmComponent {
   listarActos(){
     this.serviceActo.GetAll().subscribe((rta: Acto[]) => {
       this.listaActos = rta;    
-      console.log(this.listaActos);
     });
   }
 
   listarCaratulas(){
     this.serviceCaratula.GetAll().subscribe((rta: Caratula[]) => {
       this.listaCaratulas = rta;  
-      console.log(this.listaCaratulas);  
     });
   }
 
   listarSituaciones(){
     this.serviceSituacionRevista.GetAll().subscribe((rta: SituacionRevista[]) => {
       this.listaSituaciones = rta;  
-      console.log(this.listaSituaciones);  
     });
   }
 
   save(){
+    let currentDate = new Date();
+    const currentDateFormatted = this.datePipe.transform(currentDate, 'yyyy-MM-dd');
+    console.log(currentDateFormatted);
+    let _edit: Expediente = {
+      id: this.datos.id,
+      nombre: this.datos.nombre,
+      expediente1: this.datos.expediente1,
+      fecha: currentDateFormatted!,
+      documento: this.datos.documento,
+      idCaratula: this.datos.idCaratula,
+      idActo: this.datos.idActo != '0'? this.datos.idActo: undefined,
+      idSituacionRevista: this.datos.idSituacionRevista != '0'? this.datos.idSituacionRevista: undefined,
+      fechaExpediente: this.datos.fechaExpediente,
+      firmadoSumario: this.datos.firmadoSumario,
+      firmadoLaborales: this.datos.firmadoLaborales,
+      enviadoLaborales: this.datos.enviadoLaborales,
+      avisado: this.datos.avisado,
+      observaciones: this.datos.observaciones
+    };
+    console.log(_edit);
+    if (this.datos.id > 0){
 
+      this.serviceExpediente.actualizar(_edit).subscribe(result =>
+        {         
+          this.dialogoConfirmacion.open(DialogComponent, {
+            width: '400px', data: {
+              titulo: "Confirmación",
+              mensaje: "Expediente actualizado con éxito",
+              icono: "check_circle",
+              clase: "class-success"
+            }
+          });          
+        },
+        error => {    
+          if (error.status == 401 || error.status == 403){
+            error.error = "Usuario no autorizado";
+          }      
+          this.dialogoConfirmacion.open(DialogComponent, {
+            data: {
+              titulo: "Error",
+              mensaje: error.error,
+              icono: "warning",
+              clase: "class-error"
+            }
+          })
+          console.log(error);
+        }
+      );
+    }
+    else{   
+      
+      this.serviceExpediente.nuevo(_edit).subscribe(result =>
+        {
+          this.dialogoConfirmacion.open(DialogComponent, {
+            data: {
+              titulo: "Confirmación",
+              mensaje: "Expediente ingresado con éxito",
+              icono: "check_circle",
+              clase: "class-success"
+            }
+          });
+        },
+        error => {
+          if (error.status == 401 || error.status == 403){
+            error.error = "Usuario no autorizado";
+          }
+          this.dialogoConfirmacion.open(DialogComponent, {
+            data: {
+              titulo: "Error",
+              mensaje: error.error,
+              icono: "warning",
+              clase: "class-error"
+            }
+          })
+          console.log(error);
+        }
+      );
+    } 
   }
-
   
 }

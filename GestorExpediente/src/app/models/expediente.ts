@@ -5,9 +5,9 @@ export interface Expediente{
     fecha: string;
     documento: string;
     idCaratula: number;
-    idActo: number;
-    idSituacionRevista: number;
-    fechaExpediente: string;
+    idActo?: string;
+    idSituacionRevista?: string;
+    fechaExpediente?: string;
     firmadoSumario: boolean;
     firmadoLaborales: boolean;
     enviadoLaborales: boolean;
