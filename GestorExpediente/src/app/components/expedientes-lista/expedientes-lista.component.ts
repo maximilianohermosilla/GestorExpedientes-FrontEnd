@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { SpinnerService } from 'src/app/services/spinner.service';
 
 @Component({
   selector: 'app-expedientes-lista',
@@ -29,10 +30,11 @@ export class ExpedientesListaComponent {
   title = "";
   filterPendientes: boolean = false;
 
-  constructor(private servicioExpediente: ExpedienteService, public dialog: MatDialog, public dialogoConfirmacion: MatDialog, private liveAnnouncer: LiveAnnouncer, public datePipe: DatePipe
-    , private router: Router) { }
+  constructor(private servicioExpediente: ExpedienteService, public dialog: MatDialog, public dialogoConfirmacion: MatDialog, private liveAnnouncer: LiveAnnouncer, public datePipe: DatePipe,
+    public spinnerService: SpinnerService, private router: Router) { }
 
   ngOnInit(): void {
+    this.spinnerService.show();
     this.servicioExpediente.GetAll().subscribe((rta: any[]) => {
       this.dataSource = new MatTableDataSource<any[]>(rta);
       this.dataSource.paginator = this.paginator;

@@ -139,7 +139,7 @@
   .icono{
     margin-left: 0.5rem;
     animation: shake 1.5s;
-    animation-iteration-count: infinite;
+    /*animation-iteration-count: infinite;*/
     /*animation: 0.5s ease-out 0s 1 transitionLeft;*/
   }
 

@@ -15,6 +15,7 @@ import { SituacionRevistaAbmComponent } from './components/situacion-revista-abm
 import { ExpedienteAbmComponent } from './components/expediente-abm/expediente-abm.component';
 import { ToolbarComponent } from './components/shared/toolbar/toolbar.component';
 import { SpinnerComponent } from './components/shared/spinner/spinner.component';
+import { SpinnerInterceptorService } from './services/spinner-interceptor.service';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { DialogComponent } from './components/shared/dialog/dialog.component';
 import { FilterPipe } from './pipes/filter.pipe';
@@ -22,6 +23,9 @@ import { ExpedientesListaComponent } from './components/expedientes-lista/expedi
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { LoginComponent } from './components/login/login.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from './services/interceptor.service';
 
 
 @NgModule({
@@ -38,7 +42,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     FilterPipe,
     ExpedientesListaComponent,
     LandingPageComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +52,11 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MaterialModule,
     SharedModule
   ],
-  providers: [DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'fr' }],
+  providers: [DatePipe, FilterPipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'fr' },
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptorService, multi: true}, 
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,6 +4,10 @@ import { Navitem } from './models/navitem';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './components/shared/dialog/dialog.component';
+import { SpinnerService } from './services/spinner.service';
+import { LoginComponent } from './components/login/login.component';
+import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
+import { TokenService } from './services/token.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,17 +24,18 @@ export class AppComponent {
 
   private _mobileQueryListener: () => void;
   userName: string = "";
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private router: Router, public dialog: MatDialog, public dialogoConfirmacion: MatDialog) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private router: Router, public dialog: MatDialog, public dialogoConfirmacion: MatDialog, private tokenService: TokenService
+    , public spinnerService: SpinnerService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit(): void{    
-    this.isAdmin  = true;
+    this.isAdmin  = (this.tokenService.getToken())? true: false;
     this.fillerNav.push({nombre: "Inicio",routerlink: "menu",icon: "home"}); 
     if (this.isAdmin) {
-      this.userName = "Administrador"
+      this.userName = this.tokenService.getUserName();
       this.fillerNav.push({nombre: "Expedientes",routerlink: "expedientes",icon: "inventory"});       
     }
     this.fillerNav.push({nombre: "Búsquedas",routerlink: "dashboard",icon: "search"}); 
@@ -42,7 +47,7 @@ export class AppComponent {
   }
 
   login(){
-    /*const dialogRef = this.dialog.open(LoginComponent,{
+    const dialogRef = this.dialog.open(LoginComponent,{
       width: '640px',disableClose: false, data: {
         title: "Ingresar",        
       } 
@@ -52,11 +57,11 @@ export class AppComponent {
         window.location.reload();            
         this.spinnerService.hide();
       }, 1000);
-    }) */  
+    })   
   }
 
   toggleLogin(){ 
-   /* if(this.tokenService.getToken()){
+    if(this.tokenService.getToken()){
       this.dialogoConfirmacion.open(ConfirmDialogComponent, {
         data: `¿Está seguro de que desea cerrar la sesión?`
       })
@@ -85,6 +90,6 @@ export class AppComponent {
     else{
       this.spinnerService.hide();
       this.login();
-    }   */ 
+    }    
   }
 }

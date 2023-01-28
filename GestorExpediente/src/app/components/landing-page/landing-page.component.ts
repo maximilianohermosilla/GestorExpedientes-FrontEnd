@@ -6,6 +6,9 @@ import { Usuario } from 'src/app/models/usuario';
 import { LoginService } from 'src/app/services/login.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { TokenService } from 'src/app/services/token.service';
+import { LoginComponent } from '../login/login.component';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { DialogComponent } from '../shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -17,7 +20,10 @@ export class LandingPageComponent {
   @Output() submitEM = new EventEmitter();
   @Output() btnSubmit = new EventEmitter();
   formGroup: FormGroup;
-
+  title = 'Expedientes';
+  showFiller = false;
+  isAdmin: boolean = false;
+  userName = "";
   loginUsuario: Usuario = {
     Login: '',
     Password: ''
@@ -29,7 +35,7 @@ export class LandingPageComponent {
   errMsj: string = "";
 
   constructor(private formBuilder: FormBuilder, private authService: LoginService, private route: Router, private tokenService: TokenService, 
-    private spinnerService: SpinnerService, public dialogoConfirmacion: MatDialog){
+    private spinnerService: SpinnerService, public dialogoConfirmacion: MatDialog, public dialog: MatDialog){
 
   this.formGroup = this.formBuilder.group({
     Login: ['',[Validators.required]],
@@ -51,68 +57,50 @@ export class LandingPageComponent {
     }*/
   }
 
-  onSubmit(){
-    this.btnSubmit.emit();
+  login(){
+    const dialogRef = this.dialog.open(LoginComponent,{
+      width: '640px',disableClose: false, data: {
+        title: "Ingresar",        
+      } 
+    });
+    dialogRef.afterClosed().subscribe( res => {
+      setTimeout(() => {
+        window.location.reload();            
+        this.spinnerService.hide();
+      }, 1000);
+    })   
   }
 
-  get User(){
-    return this.formGroup.get('user');
-  }
-
-  get Password(){
-    return this.formGroup.get('password');
-  }
-
-  onLogin(){
-    /*this.authService.iniciarSesion(this.loginUsuario).subscribe(data=>{
-      this.isLogged = true;
-      this.isLoginFail = false;    
-      this.perfil = data.role;
-      this.dialogoConfirmacion.open(DialogComponent, {
-        width: '400px', data: {
-          titulo: "Confirmación",
-          mensaje: "Acceso Correcto",
-          icono: "check_circle",
-          clase: "class-success"
-        }
-      });
-      this.refDialog.close(this.loginUsuario);   
-    },
-    error => {
-      console.log(error);
-      if (error.status >= 400){
-        error.error = "Usuario o contraseña incorrectas";
-      }
-      else if (error.status == 0){
-        error.error = "No es posible iniciar sesión. Consulte con su administrador";
-      }
-      else{
-        this.isLoginFail = true;
-        this.isLogged = false;     
-        this.errMsj = error; 
-        this.refDialog.close(this.loginUsuario);   
-      }
-      this.dialogoConfirmacion.open(DialogComponent, {
-        data: {
-          titulo: "Error",
-          mensaje: error.error,
-          icono: "warning",
-          clase: "class-error"
-        }
+  toggleLogin(){ 
+    if(this.tokenService.getToken()){
+      this.dialogoConfirmacion.open(ConfirmDialogComponent, {
+        data: `¿Está seguro de que desea cerrar la sesión?`
       })
-      this.spinnerService.hide(); 
+      .afterClosed()
+      .subscribe((confirmado: Boolean) => {
+        if (confirmado) {
+          this.spinnerService.show();
+          this.userName = "";
+          this.route.navigate(['menu']);
+          this.dialogoConfirmacion.open(DialogComponent, {
+            data: {
+              titulo: "Confirmación",
+              mensaje: "Cierre de sesión exitoso",
+              icono: "check_circle",
+              clase: "class-success"
+            }
+          });
+          this.spinnerService.show();
+          this.tokenService.logOut();          
+          setTimeout(() => {
+            window.location.reload();            
+          }, 1000);
+        }
+      });      
     }
-    )*/
-  }
-
-  loginInvitado(){
-    this.loginUsuario.Login = "invitado";
-    this.loginUsuario.Password = "CLAve123**";
-    this.onLogin();
-  }
-
-  loginUser(){
-    this.loginUsuario = this.formGroup.value;
-    this.onLogin();
+    else{
+      this.spinnerService.hide();
+      this.login();
+    }    
   }
 }

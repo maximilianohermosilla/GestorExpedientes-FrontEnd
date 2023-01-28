@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ExpedienteAbmComponent } from './components/expediente-abm/expediente-abm.component';
 import { ExpedientesListaComponent } from './components/expedientes-lista/expedientes-lista.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { GuardGuard } from './guards/guard.guard';
 
 const routes: Routes = [
   {
@@ -17,11 +18,12 @@ const routes: Routes = [
   {
     path: 'expedientes',
     component: ExpedientesListaComponent,
-    //canActivate: [GuardGuard] 
+    canActivate: [GuardGuard] 
   },
   {
     path: 'expediente',
     component: ExpedienteAbmComponent,
+    canActivate: [GuardGuard] 
   },
   /*{
     path: 'dashboard',

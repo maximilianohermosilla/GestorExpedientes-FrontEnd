@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { catchError, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable } from 'rxjs';
 import { DialogComponent } from '../components/shared/dialog/dialog.component';
 import { environment } from '../environment';
 import { Expediente } from '../models/expediente';
@@ -10,7 +10,8 @@ import { Expediente } from '../models/expediente';
   providedIn: 'root'
 })
 export class ExpedienteService {
-  apiUrl = environment.urlBase() + "Expediente/";
+  apiUrl = environment.urlBase() + "Expediente/";  
+  spinner = new BehaviorSubject<Boolean>(true);
   
   constructor(private http: HttpClient, public dialogoConfirmacion: MatDialog) { }
 
@@ -45,8 +46,10 @@ export class ExpedienteService {
           let errorMsg: string;
           if (error.error instanceof ErrorEvent) {
               errorMsg = `Error: ${error.error}`;
+              console.log(errorMsg);
           } else {
               errorMsg = this.getServerErrorMessage(error);
+              console.log(errorMsg);
           }
           this.dialogoConfirmacion.open(DialogComponent, {
             data: {
@@ -68,6 +71,9 @@ export class ExpedienteService {
         }
         case 403: {
             return `Access Denied: ${error.message}`;
+        }
+        case 401: {
+          return 'Acceso Denegado';
         }
         case 500: {
             return `Internal Server Error: ${error.message}`;
