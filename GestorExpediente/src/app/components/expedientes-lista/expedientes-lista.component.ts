@@ -9,6 +9,9 @@ import { ExpedienteService } from 'src/app/services/expediente.service';
 import { ExpedienteAbmComponent } from '../expediente-abm/expediente-abm.component';
 import { DialogComponent } from '../shared/dialog/dialog.component';
 import { DatePipe } from '@angular/common';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Router } from '@angular/router';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-expedientes-lista',
@@ -21,10 +24,13 @@ export class ExpedientesListaComponent {
   @ViewChild(MatSort) sort!: MatSort;
   
   dataSource: any;
-  nombreColumnas: string[] = ["fecha", "expediente", "caratula", "fechaExpediente", "nombre", "documento", "acto", "firmadoSumario", "firmadoLaborales", "enviadoLaborales", "avisado", "acciones"];
+  nombreColumnas: string[] = ["fecha", "expediente", "caratula", "fechaExpediente", "nombre", "documento", "acto",
+   "situacionRevista", "firmadoSumario", "firmadoLaborales", "enviadoLaborales", "avisado", "acciones"];
   title = "";
+  filterPendientes: boolean = false;
 
-  constructor(private servicioExpediente: ExpedienteService, public dialog: MatDialog, public dialogoConfirmacion: MatDialog, private liveAnnouncer: LiveAnnouncer, public datePipe: DatePipe) { }
+  constructor(private servicioExpediente: ExpedienteService, public dialog: MatDialog, public dialogoConfirmacion: MatDialog, private liveAnnouncer: LiveAnnouncer, public datePipe: DatePipe
+    , private router: Router) { }
 
   ngOnInit(): void {
     this.servicioExpediente.GetAll().subscribe((rta: any[]) => {
@@ -32,7 +38,11 @@ export class ExpedientesListaComponent {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       //console.log(rta);
-    })
+    })    
+  }
+
+  nuevoExpediente(){
+    this.router.navigate(['expediente']);
   }
 
   openDialog(): void {  
@@ -49,23 +59,13 @@ export class ExpedientesListaComponent {
   }
 
   ver(event: any) {
-    this.servicioExpediente.GetById(event.id).subscribe((rta: Expediente) => { 
-      const dialogRef = this.dialog.open(ExpedienteAbmComponent,{
-        width: '640px',disableClose: false, data: {
-          title: "Editar Expediente",
-          estilo: rta
-        } 
-      });
-
-      dialogRef.afterClosed().subscribe( res => {      
-        this.ngOnInit();
-      })
-    });
+    console.log
+    this.router.navigate(['expediente'], { queryParams: { idExpediente: event.id } });
   } 
 
   eliminar(expediente: Expediente){
-    this.dialogoConfirmacion.open(DialogComponent, {
-        data: `¿Está seguro de que desea eliminar ${expediente.nombre}?`
+    this.dialogoConfirmacion.open(ConfirmDialogComponent, {
+        data: `¿Está seguro de que desea eliminar ${expediente.expediente1}?`
       })
       .afterClosed()
       .subscribe((confirmado: Boolean) => {
@@ -89,5 +89,73 @@ export class ExpedientesListaComponent {
     else{
       this.liveAnnouncer.announce('sorting cleared');
     }
+  }
+
+  onChangePendientes(){
+    this.filterPendientes = !this.filterPendientes;
+    console.log(this.filterPendientes);
+    if (this.filterPendientes == true){
+      this.servicioExpediente.GetAllPendientes().subscribe((rta: any[]) => {
+        this.dataSource = new MatTableDataSource<any[]>(rta);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }) 
+    }
+    else{
+      this.servicioExpediente.GetAll().subscribe((rta: any[]) => {
+        this.dataSource = new MatTableDataSource<any[]>(rta);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }) 
+    }
+  }
+
+  onChangeFirmadoSum(event: Expediente){
+    event.firmadoSumario = !event.firmadoSumario;
+    this.updateExpediente(event);
+  }
+
+  onChangeFirmadoLab(event: Expediente){
+    event.firmadoLaborales = !event.firmadoLaborales;
+    this.updateExpediente(event);
+  }
+
+  onChangeEnviadoLab(event: Expediente){
+    event.enviadoLaborales = !event.enviadoLaborales;
+    this.updateExpediente(event);
+  }
+
+  onChangeAvisado(event: Expediente){
+    event.avisado = !event.avisado;
+    this.updateExpediente(event);
+  }
+
+  updateExpediente(event: any){
+    this.servicioExpediente.actualizar(event).subscribe(result =>
+      {         
+        this.dialogoConfirmacion.open(DialogComponent, {
+          width: '400px', data: {
+            titulo: "Confirmación",
+            mensaje: "Expediente actualizado con éxito",
+            icono: "check_circle",
+            clase: "class-success"
+          }
+        });          
+      },
+      error => {    
+        if (error.status == 401 || error.status == 403){
+          error.error = "Usuario no autorizado";
+        }      
+        this.dialogoConfirmacion.open(DialogComponent, {
+          data: {
+            titulo: "Error",
+            mensaje: error.error,
+            icono: "warning",
+            clase: "class-error"
+          }
+        })
+        console.log(error);
+      }
+    );
   }
 }

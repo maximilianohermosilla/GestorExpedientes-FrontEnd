@@ -61,10 +61,39 @@ th, td{
     font-size: 10px;
 }
 
+.end{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.center{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+    background: rgb(6,0,115);
+    background: linear-gradient(0deg, rgba(6,0,115,1) 0%, rgba(9,9,121,1) 24%, rgba(0,125,255,1) 100%);
+    color: white;
+    opacity: 0.8;
+    margin-bottom: 20px;
+    border-radius: 7px;
+  }
+
+  .center>h1{
+    padding-top: 16px;
+  }
+
+  .start{
+    width: 174px;
+  }
+
+  .paginator{
+    overflow: initial;
+  }
+
 @media screen and (max-width: 575px) {
-    .card-body{
-        margin: 8px;
-    }
+  
 
     th, td{        
         text-align: center!important;
@@ -104,4 +133,8 @@ th, td{
         margin-top: 5px;
         padding: 0 8%;
     }   
+
+    .start{
+        width: 52px;
+      }
   }

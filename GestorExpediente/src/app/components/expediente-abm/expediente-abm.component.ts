@@ -20,6 +20,8 @@ import {
 } from '@angular/material-moment-adapter';
 import 'moment/locale/ja';
 import 'moment/locale/fr';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-expediente-abm',
@@ -45,7 +47,8 @@ export class ExpedienteAbmComponent {
   dataSource: any;
   nombreColumnas: string[] = ["nombre", "acciones"];
   formGroup: FormGroup;
-  title = "";  
+  title = "Nuevo Expediente";  
+  idExpediente: number = 0;
   listaActos: Acto[] = [];
   listaCaratulas: Caratula[] = [];
   listaSituaciones: SituacionRevista[] = [];
@@ -79,8 +82,9 @@ export class ExpedienteAbmComponent {
     return '';
   };
 
-  constructor(private formBuilder: FormBuilder, public dialogoConfirmacion: MatDialog, private dateAdapter: DateAdapter<Date>, public datePipe: DatePipe,
+  constructor(private formBuilder: FormBuilder, public dialogoConfirmacion: MatDialog, private dateAdapter: DateAdapter<Date>, public datePipe: DatePipe, private route: ActivatedRoute,
     private serviceExpediente: ExpedienteService, private serviceActo: ActoService, private serviceCaratula: CaratulaService, private serviceSituacionRevista: SituacionRevistaService,
+    private router: Router,
       @Inject(MAT_DATE_LOCALE) private _locale: string){
       this._locale = 'fr';
       this.dateAdapter.setLocale(this._locale);
@@ -105,7 +109,36 @@ export class ExpedienteAbmComponent {
   ngOnInit(): void {
     this.listarActos();
     this.listarCaratulas();
-    this.listarSituaciones();
+    this.listarSituaciones();    
+    this.route.queryParams.subscribe(params => {
+      this.idExpediente = Number(params['idExpediente']) || 0;
+    });
+    if (this.idExpediente > 0){
+      this.serviceExpediente.GetById(this.idExpediente).subscribe((rta: any) => {
+        
+        if(rta.id > 0){
+          this.title = "Editar Expediente";
+          this.datos.id = rta.id;
+          this.datos.nombre = rta.nombre;
+          this.datos.expediente1 = rta.expediente1,
+          this.datos.fecha = rta.fecha;
+          this.datos.documento = rta.documento;
+          this.datos.idCaratula = rta.idCaratula;
+          this.datos.idActo = rta.idActo;
+          this.datos.idSituacionRevista = rta.idSituacionRevista;
+          this.datos.fechaExpediente = rta.fechaExpediente;
+          this.datos.firmadoSumario = rta.firmadoSumario;
+          this.datos.firmadoLaborales = rta.firmadoLaborales;
+          this.datos.enviadoLaborales = rta.enviadoLaborales;
+          this.datos.avisado = rta.avisado;
+          this.datos.observaciones = rta.observaciones;
+        }
+        
+      });
+    }
+    else{
+      this.title = "Nuevo Expediente";
+    }
   }
 
   listarActos(){
@@ -206,5 +239,9 @@ export class ExpedienteAbmComponent {
       );
     } 
   }
-  
+
+  cancel(){
+    this.router.navigate(['expedientes']);
+  }
+
 }

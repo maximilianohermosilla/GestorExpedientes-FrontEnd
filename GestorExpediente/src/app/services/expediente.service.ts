@@ -22,8 +22,11 @@ export class ExpedienteService {
     return this.http.get<any[]>(this.apiUrl + "listar");    
   }
 
-  public nuevo(element: Expediente): Observable<any> {
-    console.log(element);
+  public GetAllPendientes(): Observable<any> {
+    return this.http.get<any[]>(this.apiUrl + "listarPendientes");    
+  }
+
+  public nuevo(element: Expediente): Observable<any> {    
     return this.http.post<Expediente>(this.apiUrl + "nuevo", element);
   }
 
