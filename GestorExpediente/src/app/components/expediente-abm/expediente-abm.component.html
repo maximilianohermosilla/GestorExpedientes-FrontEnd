@@ -1,1 +1,84 @@
-<p>expediente-abm works!</p>
+<div mat-dialog-content class="container">    
+    <div class="card-container">
+        <h1>{{title}}</h1>
+        <mat-divider></mat-divider><br>
+        <form [formGroup]="formGroup" class="form-horizontal row">
+            <div class="col-md-6">
+            <!-- <p *ngIf="formGroup.controls['nombre'].hasError('required') && formGroup.controls['nombre'].touched" class="text-danger">El valor es requerido</p> -->
+            <mat-form-field color="accent" appearance="fill">
+                <mat-label>Expediente</mat-label>
+                <input formControlName="expediente1" matInput type="text" placeholder="" [(ngModel)]="datos.expediente1">
+            </mat-form-field>
+            <mat-form-field color="accent" appearance="fill">
+                <mat-label>Caratula</mat-label>
+                <mat-select formControlName="caratula"  [(ngModel)]="datos.idCaratula">
+                    <mat-option *ngFor="let caratula of listaCaratulas" [value]="caratula.id">{{caratula.nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field color="accent" appearance="fill">
+                <mat-label>Fecha Expediente</mat-label>
+                <input matInput formControlName="fechaExpediente" matInput type="text" placeholder="DD/MM/AAAA" [(ngModel)]="datos.fechaExpediente" [matDatepicker]="picker">
+                <mat-hint>DD/MM/AAAAA</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
+                <!-- <input formControlName="fechaExpediente" matInput type="text" placeholder="" [(ngModel)]="datos.fechaExpediente"> -->
+            </mat-form-field>
+            <mat-form-field color="accent" appearance="fill">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="nombre" matInput type="text" placeholder="" [(ngModel)]="datos.nombre">
+            </mat-form-field>
+            <mat-form-field color="accent" appearance="fill">
+                <mat-label>Documento</mat-label>
+                <input formControlName="documento" matInput type="text" placeholder="" [(ngModel)]="datos.documento">
+            </mat-form-field>   
+            <!-- <p *ngIf="(formGroup.controls['documento'].hasError('min') || formGroup.controls['documento'].hasError('max') || formGroup.controls['documento'].hasError('required')) && formGroup.controls['documento'].touched"
+            class="text-hidden">_</p> -->
+            <mat-form-field color="accent" appearance="fill">
+                <mat-label>Acto</mat-label>
+                <mat-select formControlName="acto"  [(ngModel)]="datos.idActo">
+                    <mat-option *ngFor="let acto of listaActos" [value]="acto.id">{{acto.nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        
+        </div>
+        <div class="col-md-6">
+            <!-- <p *ngIf="formGroup.controls['nombre'].hasError('required') && formGroup.controls['nombre'].touched" class="text-hidden">_</p>           -->        
+            <section color="accent" appearance="fill">
+                <mat-checkbox class="example-margin" formControlName="firmadoSumario" [(ngModel)]="datos.firmadoSumario">Firmado Sumario</mat-checkbox>
+            </section>
+            <section color="accent" appearance="fill">
+                <mat-checkbox class="example-margin" formControlName="firmadoLaborales" [(ngModel)]="datos.firmadoLaborales">Firmado Laborales</mat-checkbox>
+            </section>
+            <section color="accent" appearance="fill">
+                <mat-checkbox matInput class="example-margin" formControlName="enviadoLaborales" [(ngModel)]="datos.enviadoLaborales">Enviado Laborales</mat-checkbox>
+            </section>
+            <section color="accent" appearance="fill">
+                <mat-checkbox matInput class="example-margin" formControlName="avisado" [(ngModel)]="datos.avisado">Avisado</mat-checkbox>
+            </section>
+            <mat-form-field color="accent" appearance="fill">
+                <mat-label>SituacionRevista</mat-label>
+                <mat-select formControlName="situacionRevista" [(ngModel)]="datos.idSituacionRevista">
+                    <mat-option *ngFor="let situacion of listaSituaciones" [value]="situacion.id">{{situacion.nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field>  
+            <mat-form-field color="accent" appearance="fill">
+                <mat-label>Observaciones</mat-label>
+                <textarea matInput
+                formControlName="observaciones" 
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                [(ngModel)]="datos.observaciones"></textarea>
+                <!-- <input formControlName="observaciones" matInput type="text" placeholder="" [(ngModel)]="datos.observaciones"> -->
+            </mat-form-field>
+        </div>  
+   
+    </form>  
+    </div>   
+</div>
+<div mat-dialog-actions class="dialog-actions">
+    <button type="button" class="btn btn-success" [disabled]="!formGroup.valid" (click)="save()">Guardar</button>
+    <button type="button" class="btn btn-danger" [mat-dialog-close]="true">Cancelar</button>
+</div>
+

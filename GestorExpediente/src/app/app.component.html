@@ -1,20 +1,16 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-  <!-- <mat-toolbar color="primary" class="example-toolbar">
-    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name" routerLink="menu" style="cursor: pointer;" >Gestor Expedientes</h1><mat-icon class="beer-icon">groups</mat-icon>
-    <div class="spacer"></div>
-    <div class="name"> {{userName}} </div>
-    <button mat-mini-fab class="button-login" [color]="isAdmin? 'warn': 'accent'" [matTooltip]="isAdmin? 'Cerrar sesión': 'Ingresar'" (click)="toggleLogin()"><mat-icon>person</mat-icon></button>
-  </mat-toolbar> -->
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <span class="example-app-name"  routerLink="menu" style="cursor: pointer;" >Gestor Expedientes</span>
+    <span class="example-app-name" routerLink="menu" style="cursor: pointer;" >Gestor Expedientes</span>
     <span class="spacer"></span>
     <div class="name"> {{userName}} </div>
     <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>topic</mat-icon>
+      <mat-icon>assignment_add</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>folder_copy</mat-icon>
     </button>
     <button mat-mini-fab class="button-login" [color]="isAdmin? 'warn': 'accent'" [matTooltip]="isAdmin? 'Cerrar sesión': 'Ingresar'" (click)="toggleLogin()">
       <mat-icon>person</mat-icon>

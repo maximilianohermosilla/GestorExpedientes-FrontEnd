@@ -19,13 +19,16 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSortModule} from '@angular/material/sort';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -43,7 +46,10 @@ import {MatSortModule} from '@angular/material/sort';
     MatCardModule,
     MatTooltipModule,
     MatSortModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
+    MatDatepickerModule 
   ],
   exports: [
     MatFormFieldModule,
@@ -62,7 +68,10 @@ import {MatSortModule} from '@angular/material/sort';
     MatListModule,
     MatTooltipModule,
     MatSortModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
+    MatDatepickerModule 
   ]
 })
 export class MaterialModule { }

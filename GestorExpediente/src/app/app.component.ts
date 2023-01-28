@@ -31,7 +31,7 @@ export class AppComponent {
     this.fillerNav.push({nombre: "Inicio",routerlink: "menu",icon: "home"}); 
     if (this.isAdmin) {
       this.userName = "Administrador"
-      this.fillerNav.push({nombre: "Expedientes",routerlink: "ciudades",icon: "inventory"});       
+      this.fillerNav.push({nombre: "Expedientes",routerlink: "expedientes",icon: "inventory"});       
     }
     this.fillerNav.push({nombre: "Búsquedas",routerlink: "dashboard",icon: "search"}); 
     this.fillerNav.push({nombre: "Reportes",routerlink: "reportes",icon: "leaderboard"}); 

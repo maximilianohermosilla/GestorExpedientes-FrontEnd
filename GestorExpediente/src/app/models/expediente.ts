@@ -8,8 +8,8 @@ export interface Expediente{
     idActo: number;
     idSituacionRevista: number;
     fechaExpediente: string;
-    firmadoSumario: number;
-    firmadoLaborales: number;
+    firmadoSumario: boolean;
+    firmadoLaborales: boolean;
     enviadoLaborales: boolean;
     avisado: boolean;
     observaciones: string;

@@ -1,0 +1,55 @@
+.container{
+    width: 100%;
+}
+
+mat-form-field{
+    width: 100%
+}
+
+section{
+    width: 100%;
+    height: 56px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 22px;
+    background-color: rgba(239, 239, 239, 0.7);
+    opacity: 0.8;
+}
+
+
+.form-half{
+    width: 49%;
+    margin-right: 2px;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+}
+
+.dialog-actions{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 20px;
+}
+
+img{
+    cursor:pointer;
+}
+
+.text-danger{
+    margin: 0;
+    padding: 0;
+    color: crimson;
+}
+
+.text-hidden{
+    margin: 0;
+    padding: 0;
+    color: transparent;
+}
+
+.mat-mdc-dialog-surface{
+    background-color: red!important
+}
