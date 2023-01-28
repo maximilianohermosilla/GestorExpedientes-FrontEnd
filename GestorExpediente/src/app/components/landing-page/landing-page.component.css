@@ -43,8 +43,9 @@
     color: white;
     padding: 10px 20px;
     background: rgb(6,0,115);
-    background: linear-gradient(0deg, rgba(6,0,115,1) 0%, rgba(9,9,121,1) 24%, rgba(0,125,255,1) 100%);
+    background: linear-gradient(0deg, rgba(6,0,115,1) 0%, rgba(9,9,121,1) 24%, rgb(1, 98, 201) 100%);
     box-shadow: rgba(0, 0, 0, 0.84) 5px 5px 18px;
+    opacity: 0.9;
   }
 
   .login-title{
@@ -61,7 +62,11 @@
     color: white;
     margin: 20px;
     padding: 10px 20px;
-    background-color: rgba(198, 0, 0, 0.6);
+    background-color: rgba(255, 0, 0, 0.834);
+    box-shadow: rgba(0, 0, 0, 0.84) 5px 5px 18px;
+  }
+
+  button{
     box-shadow: rgba(0, 0, 0, 0.84) 5px 5px 18px;
   }
 
