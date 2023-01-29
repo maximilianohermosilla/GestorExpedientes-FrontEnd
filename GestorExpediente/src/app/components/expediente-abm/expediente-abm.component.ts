@@ -172,7 +172,7 @@ export class ExpedienteAbmComponent {
       idCaratula: this.datos.idCaratula,
       idActo: this.datos.idActo != '0'? this.datos.idActo: undefined,
       idSituacionRevista: this.datos.idSituacionRevista != '0'? this.datos.idSituacionRevista: undefined,
-      fechaExpediente: this.datos.fechaExpediente,
+      fechaExpediente: this.datos.fechaExpediente == ''? '1900-01-01': this.datos.fechaExpediente,
       firmadoSumario: this.datos.firmadoSumario,
       firmadoLaborales: this.datos.firmadoLaborales,
       enviadoLaborales: this.datos.enviadoLaborales,

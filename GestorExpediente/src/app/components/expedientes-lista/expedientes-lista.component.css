@@ -8,10 +8,12 @@
 
 .tabla {
     width: 100%;
-    text-align: left;
+    text-align: center;
 }
 
 .grilla{
+    width: 100%;
+    overflow-x:auto;
     box-shadow: rgba(0, 0, 0, 0.54) 0px 3px 8px;
 }
 
@@ -56,8 +58,7 @@ mat-header-row{
     width: 100%;
 }
 
-th, td{
-    
+th, td{    
     font-size: 10px;
 }
 
@@ -92,15 +93,19 @@ th, td{
     overflow: initial;
   }
 
+
+
 @media screen and (max-width: 575px) {
   
 
     th, td{        
         text-align: center!important;
-       font-size: 12px;
-        padding: 2px;
-        margin: 2px;
+        font-size: 11px;        
     } 
+
+    th{
+        padding-left: 30px;
+    }
 
     .example-button-row {
         display: flex;

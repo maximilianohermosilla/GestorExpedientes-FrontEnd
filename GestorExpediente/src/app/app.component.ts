@@ -37,9 +37,9 @@ export class AppComponent {
     if (this.isAdmin) {
       this.userName = this.tokenService.getUserName();
       this.fillerNav.push({nombre: "Expedientes",routerlink: "expedientes",icon: "inventory"});       
+      this.fillerNav.push({nombre: "Búsquedas",routerlink: "dashboard",icon: "search"}); 
+      this.fillerNav.push({nombre: "Reportes",routerlink: "reportes",icon: "leaderboard"}); 
     }
-    this.fillerNav.push({nombre: "Búsquedas",routerlink: "dashboard",icon: "search"}); 
-    this.fillerNav.push({nombre: "Reportes",routerlink: "reportes",icon: "leaderboard"}); 
   }
 
   ngOnDestroy(): void {
@@ -48,7 +48,8 @@ export class AppComponent {
 
   login(){
     const dialogRef = this.dialog.open(LoginComponent,{
-      width: '640px',disableClose: false, data: {
+      width: '640px',
+      maxWidth: '90vw', disableClose: false, data: {
         title: "Ingresar",        
       } 
     });
