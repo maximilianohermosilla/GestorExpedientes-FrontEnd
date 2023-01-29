@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
 import { Acto } from 'src/app/models/acto';
-import { Caratula } from 'src/app/models/caratula';
-import { Expediente } from 'src/app/models/expediente';
-import { SituacionRevista } from 'src/app/models/situacionRevista';
 import { ActoService } from 'src/app/services/acto.service';
-import { CaratulaService } from 'src/app/services/caratula.service';
-import { ExpedienteService } from 'src/app/services/expediente.service';
-import { SituacionRevistaService } from 'src/app/services/situacion-revista.service';
+import { SpinnerService } from 'src/app/services/spinner.service';
+import { DialogComponent } from '../shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-acto-abm',
@@ -16,79 +13,102 @@ import { SituacionRevistaService } from 'src/app/services/situacion-revista.serv
   styleUrls: ['./acto-abm.component.css']
 })
 export class ActoAbmComponent implements OnInit{
+  @ViewChild(MatTable, { static: true }) table!: MatTable<any>;
   dataSource: any;
   nombreColumnas: string[] = ["nombre", "acciones"];
   formGroup: FormGroup;
-  title = "";  
-  listaActos: Acto[] = [];
-  listaCaratulas: Caratula[] = [];
-  listaSituaciones: SituacionRevista[] = [];
+  datos: Acto = {id: 0, nombre: ""};
+  title = "";
 
-  datos: Expediente = {
-    id: 0,
-    nombre: '',
-    expediente1: '',
-    fecha: '',
-    documento: '',
-    idCaratula: 0,
-    idActo: '',
-    idSituacionRevista: '',
-    fechaExpediente: '',
-    firmadoSumario: false,
-    firmadoLaborales: false,
-    enviadoLaborales: false,
-    avisado: false,
-    observaciones: ''
-  };
+  constructor(private servicioActo: ActoService, private formBuilder: FormBuilder,
+     public spinnerService: SpinnerService, public refDialog: MatDialogRef<ActoAbmComponent>, public dialogoConfirmacion: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: { acto: any; title: string; }) {
+    
+    this.title = "Nuevo Acto";
 
-  constructor(private formBuilder: FormBuilder, public dialogoConfirmacion: MatDialog, 
-    private serviceExpediente: ExpedienteService, private serviceActo: ActoService, private serviceCaratula: CaratulaService, private serviceSituacionRevista: SituacionRevistaService){
-      this.formGroup = this.formBuilder.group({
-        nombre: ['',[Validators.required]],      
-        expediente1: ['',[Validators.required]],
-        fecha: ['',],
-        documento: ['',],
-        caratula: ['',],
-        acto: ['',],
-        situacionRevista: ['',],
-        fechaExpediente: ['',[Validators.required]],  
-        firmadoSumario: ['',],
-        firmadoLaborales: ['',],
-        enviadoLaborales: ['',],
-        avisado: ['',],
-        observaciones: ['',],
-      })
+    if (data.acto != undefined) {
+      this.datos = data.acto;
+      this.title = data.title;
+    }
 
-
+    this.formGroup = this.formBuilder.group({
+      nombre: ['',[Validators.required]],  
+    })
   }
+  
   ngOnInit(): void {
-    this.listarActos();
-    this.listarCaratulas();
-    this.listarSituaciones();
-  }
-
-  listarActos(){
-    this.serviceActo.GetAll().subscribe((rta: Acto[]) => {
-      this.listaActos = rta;    
-      console.log(this.listaActos);
-    });
-  }
-
-  listarCaratulas(){
-    this.serviceCaratula.GetAll().subscribe((rta: Caratula[]) => {
-      this.listaCaratulas = rta;  
-      console.log(this.listaCaratulas);  
-    });
-  }
-
-  listarSituaciones(){
-    this.serviceSituacionRevista.GetAll().subscribe((rta: SituacionRevista[]) => {
-      this.listaSituaciones = rta;  
-      console.log(this.listaSituaciones);  
-    });
+    
   }
 
   save(){
-
+    let _edit: Acto = {id: this.datos.id, nombre: this.datos.nombre};
+    if (this.datos.id > 0){
+      this.servicioActo.actualizar(_edit).subscribe(
+        result =>
+        {
+          this.refDialog.close(this.formGroup.value);                
+          this.dialogoConfirmacion.open(DialogComponent, {
+            width: '400px', data: {
+              titulo: "Confirmación",
+              mensaje: "Acto actualizado con éxito",
+              icono: "check_circle",
+              clase: "class-success"
+            }
+          });
+          this.spinnerService.hide();
+        },
+        error => 
+        {
+          if (error.status == 401 || error.status == 403){
+            error.error = "Usuario no autorizado";
+          }
+          this.dialogoConfirmacion.open(DialogComponent, {
+            data: {
+              titulo: "Error",
+              mensaje: error.error,
+              icono: "warning",
+              clase: "class-error"
+            }
+          })
+          this.refDialog.close();
+          console.log(error);
+          this.spinnerService.hide();
+        }          
+      );
+    }
+    else{     
+      this.servicioActo.nuevo(_edit).subscribe(
+        result =>
+        {
+          this.refDialog.close(this.formGroup.value);
+          this.dialogoConfirmacion.open(DialogComponent, {
+            data: {
+              titulo: "Confirmación",
+              mensaje: "Acto ingresado con éxito",
+              icono: "check_circle",
+              clase: "class-success"
+            }
+          });
+          this.spinnerService.hide();
+        },
+        error => {
+          if (error.status == 401 || error.status == 403){
+            error.error = "Usuario no autorizado";
+          }
+          this.dialogoConfirmacion.open(DialogComponent, {
+            data: {
+              titulo: "Error",
+              mensaje: error.error,
+              icono: "warning",
+              clase: "class-error"
+            }
+          })
+          this.refDialog.close();
+          console.log(error);
+          this.spinnerService.hide();
+        }
+      );
+    }
   }
+
 }

@@ -12,7 +12,7 @@
     <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" routerLink="expedientes">
       <mat-icon>folder_copy</mat-icon>
     </button>
-    <button mat-mini-fab class="button-login" [color]="isAdmin? 'warn': 'accent'" [matTooltip]="isAdmin? 'Cerrar sesión': 'Ingresar'" (click)="toggleLogin()">
+    <button mat-icon-button class="button-login" [color]="isAdmin? 'warn': 'disabled'" [matTooltip]="isAdmin? 'Cerrar sesión': 'Ingresar'" (click)="toggleLogin()">
       <mat-icon>person</mat-icon>
     </button>
   </mat-toolbar>

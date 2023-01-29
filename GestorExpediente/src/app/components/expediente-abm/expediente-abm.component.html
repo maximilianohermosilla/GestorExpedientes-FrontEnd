@@ -1,4 +1,4 @@
-
+<app-spinner *ngIf="spinnerService.blockUI | async"></app-spinner>
 <div mat-dialog-content class="card-body">    
     <br>
     <div class="">
@@ -15,12 +15,15 @@
                 <mat-label>Expediente</mat-label>
                 <input formControlName="expediente1" matInput type="text" placeholder="" [(ngModel)]="datos.expediente1">
             </mat-form-field>
-            <mat-form-field color="accent" appearance="fill">
-                <mat-label>Caratula</mat-label>
-                <mat-select formControlName="caratula"  [(ngModel)]="datos.idCaratula">
-                    <mat-option *ngFor="let caratula of listaCaratulas" [value]="caratula.id">{{caratula.nombre}}</mat-option>
-                </mat-select>
-            </mat-form-field>
+            <div class="form-add">
+                <mat-form-field color="accent" appearance="fill">
+                    <mat-label>Caratula</mat-label>
+                    <mat-select formControlName="caratula"  [(ngModel)]="datos.idCaratula">
+                        <mat-option *ngFor="let caratula of listaCaratulas" [value]="caratula.id">{{caratula.nombre}}</mat-option>
+                    </mat-select>                
+                </mat-form-field>
+                <button matSuffix class="btn btn-outline-success add-button" (click)="openDialog('caratula')"><mat-icon>add</mat-icon></button>
+            </div>
             <mat-form-field color="accent" appearance="fill">
                 <mat-label>Fecha Expediente</mat-label>
                 <input matInput formControlName="fechaExpediente" matInput type="text" placeholder="DD/MM/AAAA" [(ngModel)]="datos.fechaExpediente" [matDatepicker]="picker">
@@ -39,13 +42,16 @@
             </mat-form-field>   
             <!-- <p *ngIf="(formGroup.controls['documento'].hasError('min') || formGroup.controls['documento'].hasError('max') || formGroup.controls['documento'].hasError('required')) && formGroup.controls['documento'].touched"
             class="text-hidden">_</p> -->
-            <mat-form-field color="accent" appearance="fill">
-                <mat-label>Acto</mat-label>
-                <mat-select formControlName="acto"  [(ngModel)]="datos.idActo">
-                    <mat-option [value]="0">Ninguno</mat-option>
-                    <mat-option *ngFor="let acto of listaActos" [value]="acto.id">{{acto.nombre}}</mat-option>
-                </mat-select>
-            </mat-form-field>
+            <div class="form-add">
+                <mat-form-field color="accent" appearance="fill">
+                    <mat-label>Acto</mat-label>
+                    <mat-select formControlName="acto"  [(ngModel)]="datos.idActo">
+                        <mat-option [value]="0">Ninguno</mat-option>
+                        <mat-option *ngFor="let acto of listaActos" [value]="acto.id">{{acto.nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button matSuffix class="btn btn-outline-success add-button" (click)="openDialog('acto')"><mat-icon>add</mat-icon></button>
+            </div>
         
         </div>
         <div class="col-md-6">
@@ -62,13 +68,16 @@
             <section color="accent" appearance="fill">
                 <mat-checkbox matInput class="example-margin" formControlName="avisado" [(ngModel)]="datos.avisado">Avisado</mat-checkbox>
             </section>
-            <mat-form-field color="accent" appearance="fill">
-                <mat-label>SituacionRevista</mat-label>
-                <mat-select formControlName="situacionRevista" [(ngModel)]="datos.idSituacionRevista">
-                    <mat-option [value]="0">Ninguno</mat-option>
-                    <mat-option *ngFor="let situacion of listaSituaciones" [value]="situacion.id">{{situacion.nombre}}</mat-option>
-                </mat-select>
-            </mat-form-field>  
+            <div class="form-add">
+                <mat-form-field color="accent" appearance="fill">
+                    <mat-label>SituacionRevista</mat-label>
+                    <mat-select formControlName="situacionRevista" [(ngModel)]="datos.idSituacionRevista">
+                        <mat-option [value]="0">Ninguno</mat-option>
+                        <mat-option *ngFor="let situacion of listaSituaciones" [value]="situacion.id">{{situacion.nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button matSuffix class="btn btn-outline-success add-button" (click)="openDialog('situacion')"><mat-icon>add</mat-icon></button>
+            </div>
             <mat-form-field color="accent" appearance="fill">
                 <mat-label>Observaciones</mat-label>
                 <textarea matInput
@@ -87,6 +96,6 @@
 </div>
 <div mat-dialog-actions class="dialog-actions">
     <button type="button" class="btn btn-success" [disabled]="!formGroup.valid" (click)="save()">Guardar</button>
-    <button type="button" class="btn btn-danger" (click)="cancel()">Salir</button>
+    <button type="button" class="btn btn-danger" (click)="cancel()">Cerrar</button>
 </div>
 

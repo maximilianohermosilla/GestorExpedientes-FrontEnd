@@ -22,6 +22,10 @@ import 'moment/locale/ja';
 import 'moment/locale/fr';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ActoAbmComponent } from '../acto-abm/acto-abm.component';
+import { SpinnerService } from 'src/app/services/spinner.service';
+import { CaratulaAbmComponent } from '../caratula-abm/caratula-abm.component';
+import { SituacionRevistaAbmComponent } from '../situacion-revista-abm/situacion-revista-abm.component';
 
 @Component({
   selector: 'app-expediente-abm',
@@ -84,7 +88,7 @@ export class ExpedienteAbmComponent {
 
   constructor(private formBuilder: FormBuilder, public dialogoConfirmacion: MatDialog, private dateAdapter: DateAdapter<Date>, public datePipe: DatePipe, private route: ActivatedRoute,
     private serviceExpediente: ExpedienteService, private serviceActo: ActoService, private serviceCaratula: CaratulaService, private serviceSituacionRevista: SituacionRevistaService,
-    private router: Router,
+    private router: Router, public spinnerService: SpinnerService,
       @Inject(MAT_DATE_LOCALE) private _locale: string){
       this._locale = 'fr';
       this.dateAdapter.setLocale(this._locale);
@@ -244,4 +248,58 @@ export class ExpedienteAbmComponent {
     this.router.navigate(['expedientes']);
   }
 
+  openDialog(tipo: string): void {        
+    switch (tipo) {
+      case 'caratula':
+         this.openABMCaratula();
+        break;
+      case 'acto':
+         this.openABMActo();
+      break;
+      case 'situacion':
+         this.openABMSituacion();
+      break;
+      default:        
+        break;
+    }    
+  }
+
+  openABMCaratula(){
+    const dialogRef = this.dialogoConfirmacion.open(CaratulaAbmComponent,{
+      width: '640px', minWidth: '340px',disableClose: false, data: {
+        title: "Nueva Caratula",
+        acto: null
+      } 
+    });
+
+    dialogRef.afterClosed().subscribe( res => {
+      this.listarCaratulas();
+    })
+  }
+
+  openABMActo(){
+    const dialogRef = this.dialogoConfirmacion.open(ActoAbmComponent,{
+      width: '640px', minWidth: '340px',disableClose: false, data: {
+        title: "Nuevo Acto",
+        acto: null
+      } 
+    });
+
+    dialogRef.afterClosed().subscribe( res => {
+      this.listarActos();
+    })
+  }
+
+  openABMSituacion(){
+    const dialogRef = this.dialogoConfirmacion.open(SituacionRevistaAbmComponent,{
+      width: '640px', minWidth: '340px',disableClose: false, data: {
+        title: "Nueva Situación de Revista",
+        acto: null
+      } 
+    });
+
+    dialogRef.afterClosed().subscribe( res => {
+      this.listarSituaciones();
+    })
+  }
 }

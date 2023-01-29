@@ -26,6 +26,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { LoginComponent } from './components/login/login.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './services/interceptor.service';
+import { ReportesComponent } from './components/reportes/reportes.component';
+import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import { InterceptorService } from './services/interceptor.service';
     ExpedientesListaComponent,
     LandingPageComponent,
     ConfirmDialogComponent,
-    LoginComponent
+    LoginComponent,
+    ReportesComponent,
+    ConfiguracionComponent
   ],
   imports: [
     BrowserModule,

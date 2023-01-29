@@ -32,12 +32,12 @@ export class AppComponent {
   }
 
   ngOnInit(): void{    
-    this.isAdmin  = (this.tokenService.getToken())? true: false;
+    this.isAdmin  = (this.tokenService.getToken() != null)? true: false;
     this.fillerNav.push({nombre: "Inicio",routerlink: "menu",icon: "home"}); 
     if (this.isAdmin) {
       this.userName = this.tokenService.getUserName();
       this.fillerNav.push({nombre: "Expedientes",routerlink: "expedientes",icon: "inventory"});       
-      this.fillerNav.push({nombre: "Búsquedas",routerlink: "dashboard",icon: "search"}); 
+      this.fillerNav.push({nombre: "Búsquedas",routerlink: "expedientes",icon: "search"}); 
       this.fillerNav.push({nombre: "Reportes",routerlink: "reportes",icon: "leaderboard"}); 
     }
   }

@@ -37,6 +37,8 @@ export class LandingPageComponent {
   constructor(private formBuilder: FormBuilder, private authService: LoginService, private route: Router, private tokenService: TokenService, 
     private spinnerService: SpinnerService, public dialogoConfirmacion: MatDialog, public dialog: MatDialog){
 
+  this.isAdmin  = (this.tokenService.getToken() != null)? true: false;
+  this.userName = this.tokenService.getUserName();
   this.formGroup = this.formBuilder.group({
     Login: ['',[Validators.required]],
     Password: ['',[Validators.required]]
