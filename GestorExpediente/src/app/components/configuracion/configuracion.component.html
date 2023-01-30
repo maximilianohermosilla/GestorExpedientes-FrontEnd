@@ -1,1 +1,29 @@
-<p>configuracion works!</p>
+<app-spinner *ngIf="spinnerService.blockUI | async"></app-spinner>
+
+<app-grilla-nombre
+title='Caratulas'
+[data]="listaCaratulas"
+(btnAdd)="openDialogCaratula()"
+(btnUpdate)="openEditCaratula($event)"
+(btnDelete)="openDeleteCaratula($event)"
+></app-grilla-nombre>
+
+<mat-divider></mat-divider>
+
+<app-grilla-nombre
+title='Actos'
+[data]="listaActos"
+(btnAdd)="openDialogActo()"
+(btnUpdate)="openEditActo($event)"
+(btnDelete)="openDeleteActo($event)"
+></app-grilla-nombre>
+
+<mat-divider></mat-divider>
+
+<app-grilla-nombre
+title='Revista'
+[data]="listaSituaciones"
+(btnAdd)="openDialogSituacion()"
+(btnUpdate)="openEditSituacion($event)"
+(btnDelete)="openDeleteSituacion($event)"
+></app-grilla-nombre>

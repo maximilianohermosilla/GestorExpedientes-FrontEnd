@@ -28,14 +28,13 @@ export class ExpedientesListaComponent {
   nombreColumnas: string[] = ["fecha", "expediente", "caratula", "fechaExpediente", "nombre", "documento", "acto",
    "situacionRevista", "firmadoSumario", "firmadoLaborales", "enviadoLaborales", "avisado", "acciones"];
   title = "";
-  filterPendientes: boolean = false;
+  filterPendientes: boolean = true;
 
   constructor(private servicioExpediente: ExpedienteService, public dialog: MatDialog, public dialogoConfirmacion: MatDialog, private liveAnnouncer: LiveAnnouncer, public datePipe: DatePipe,
     public spinnerService: SpinnerService, private router: Router) { }
 
   ngOnInit(): void {
-    this.spinnerService.show();
-    this.servicioExpediente.GetAll().subscribe((rta: any[]) => {
+    this.servicioExpediente.GetAllPendientes().subscribe((rta: any[]) => {
       this.dataSource = new MatTableDataSource<any[]>(rta);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -95,7 +94,6 @@ export class ExpedientesListaComponent {
 
   onChangePendientes(){
     this.filterPendientes = !this.filterPendientes;
-    console.log(this.filterPendientes);
     if (this.filterPendientes == true){
       this.servicioExpediente.GetAllPendientes().subscribe((rta: any[]) => {
         this.dataSource = new MatTableDataSource<any[]>(rta);

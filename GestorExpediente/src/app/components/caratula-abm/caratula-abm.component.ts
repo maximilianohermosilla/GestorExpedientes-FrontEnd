@@ -22,12 +22,12 @@ export class CaratulaAbmComponent {
 
   constructor(private servicioCaratula: CaratulaService, private formBuilder: FormBuilder,
      public spinnerService: SpinnerService, public refDialog: MatDialogRef<CaratulaAbmComponent>, public dialogoConfirmacion: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: { acto: any; title: string; }) {
+    @Inject(MAT_DIALOG_DATA) public data: { caratula: any; title: string; }) {
     
     this.title = "Nueva Caratula";
 
-    if (data.acto != undefined) {
-      this.datos = data.acto;
+    if (data.caratula != undefined) {
+      this.datos = data.caratula;
       this.title = data.title;
     }
 

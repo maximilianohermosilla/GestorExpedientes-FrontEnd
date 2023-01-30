@@ -30,7 +30,7 @@ export class LoginComponent {
   errMsj: string = "";
 
   constructor(private formBuilder: FormBuilder, private authService: LoginService, private route: Router, private tokenService: TokenService, 
-    private spinnerService: SpinnerService, public refDialog: MatDialogRef<LoginComponent>, public dialogoConfirmacion: MatDialog){
+    public spinnerService: SpinnerService, public refDialog: MatDialogRef<LoginComponent>, public dialogoConfirmacion: MatDialog){
 
     this.formGroup = this.formBuilder.group({
       Login: ['',[Validators.required]],

@@ -17,7 +17,7 @@
                 <mat-icon matPrefix class="my-icon">search</mat-icon>
             </mat-form-field>
             <section color="accent" appearance="fill">
-                <mat-checkbox matInput class="example-margin" [checked]="filterPendientes" (change)="onChangePendientes()">Filtrar Pendientes</mat-checkbox>
+                <mat-checkbox matInput class="example-margin" [checked]="!filterPendientes" (change)="onChangePendientes()">Historial Expedientes</mat-checkbox>
             </section>
             <div class="col-sm-12 grilla">
                 <table mat-table [dataSource]="dataSource" class="tabla" #table matSort (matSortChange)="announceSortChange($event)" >                          

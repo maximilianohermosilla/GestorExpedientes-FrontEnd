@@ -171,7 +171,7 @@ export class ExpedienteAbmComponent {
       id: this.datos.id,
       nombre: this.datos.nombre,
       expediente1: this.datos.expediente1,
-      fecha: currentDateFormatted!,
+      fecha: this.datos.id > 0 ? this.datos.fecha: currentDateFormatted!,
       documento: this.datos.documento,
       idCaratula: this.datos.idCaratula,
       idActo: this.datos.idActo != '0'? this.datos.idActo: undefined,

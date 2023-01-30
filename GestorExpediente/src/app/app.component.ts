@@ -36,10 +36,13 @@ export class AppComponent {
     this.fillerNav.push({nombre: "Inicio",routerlink: "menu",icon: "home"}); 
     if (this.isAdmin) {
       this.userName = this.tokenService.getUserName();
-      this.fillerNav.push({nombre: "Expedientes",routerlink: "expedientes",icon: "inventory"});       
+      this.fillerNav.push({nombre: "Expedientes",routerlink: "expedientes",icon: "folder_copy"});
+      this.fillerNav.push({nombre: "Alta Expediente",routerlink: "expediente",icon: "assignment_add"});
       this.fillerNav.push({nombre: "Búsquedas",routerlink: "expedientes",icon: "search"}); 
+      this.fillerNav.push({nombre: "Configuración",routerlink: "configuracion",icon: "settings"});       
       this.fillerNav.push({nombre: "Reportes",routerlink: "reportes",icon: "leaderboard"}); 
     }
+    this.spinnerService.hide();
   }
 
   ngOnDestroy(): void {

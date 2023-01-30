@@ -1,3 +1,4 @@
+<!-- <app-spinner *ngIf="spinnerService.blockUI | async"></app-spinner> -->
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()">
@@ -6,10 +7,10 @@
     <span class="example-app-name" routerLink="menu" style="cursor: pointer;" >Gestor Expedientes</span><img class="icono" src="/assets/favicon.png" alt="">
     <span class="spacer"></span>
     <div class="name"> {{userName}} </div>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" routerLink="expediente">
+    <button mat-icon-button class="example-icon favorite-icon" [matTooltip]="'Nuevo Expediente'" aria-label="Example icon-button with heart icon" routerLink="expediente">
       <mat-icon>assignment_add</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" routerLink="expedientes">
+    <button mat-icon-button class="example-icon favorite-icon" [matTooltip]="'Expedientes'" aria-label="Example icon-button with heart icon" routerLink="expedientes">
       <mat-icon>folder_copy</mat-icon>
     </button>
     <button mat-icon-button class="button-login" [color]="isAdmin? 'warn': 'disabled'" [matTooltip]="isAdmin? 'Cerrar sesión': 'Ingresar'" (click)="toggleLogin()">

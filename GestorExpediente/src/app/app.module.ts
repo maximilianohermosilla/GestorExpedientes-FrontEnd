@@ -28,6 +28,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './services/interceptor.service';
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
+import { GrillaNombreComponent } from './components/shared/grilla-nombre/grilla-nombre.component';
 
 
 @NgModule({
@@ -47,7 +49,9 @@ import { ConfiguracionComponent } from './components/configuracion/configuracion
     ConfirmDialogComponent,
     LoginComponent,
     ReportesComponent,
-    ConfiguracionComponent
+    ConfiguracionComponent,
+    NotfoundComponent,
+    GrillaNombreComponent
   ],
   imports: [
     BrowserModule,

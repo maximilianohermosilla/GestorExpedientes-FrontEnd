@@ -23,12 +23,12 @@ export class SituacionRevistaAbmComponent {
 
   constructor(private servicioSituacion: SituacionRevistaService, private formBuilder: FormBuilder,
      public spinnerService: SpinnerService, public refDialog: MatDialogRef<SituacionRevistaAbmComponent>, public dialogoConfirmacion: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: { acto: any; title: string; }) {
+    @Inject(MAT_DIALOG_DATA) public data: { situacion: any; title: string; }) {
     
     this.title = "Nueva Situacion de Revista";
 
-    if (data.acto != undefined) {
-      this.datos = data.acto;
+    if (data.situacion != undefined) {
+      this.datos = data.situacion;
       this.title = data.title;
     }
 
